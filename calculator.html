@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGPA & CGPA CALCULATOR</title>
+    <style>
+body {
+    margin: 0px;
+    box-sizing: border-box;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:#f8f9fa;
+}
+
+.section {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    border: 1px solid #777587;
+    padding: 10px;
+    width: 100%; /* Ensures it fits mobile widths */
+    max-width: 600px; /* Limits maximum width on desktop */
+}
+
+.remove, select, input {
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    background-color: #cbd5e1;
+}
+
+.remove {
+    color: red; 
+}
+.remove-img{
+  width:12px;
+  height:12px;
+}
+.remove:hover {
+    background-color: lightgray;
+}
+
+#cal {
+    padding: 5px;
+    background-color: #3323cc;
+    margin: 10px;
+    color: white;
+    border-radius: 5px;
+}
+
+#add {
+    padding: 5px;
+    background-color: white;
+    border-color: cornflowerblue;
+    color: #3323cc;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.row {
+    padding: 5px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.header-row {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1.5fr 40px; 
+    margin-bottom: 12px;
+    color: #374151;
+}
+
+.icon {
+    width: 10px;
+    height: 10px;
+}
+
+.result-full-box {
+    display: none;
+    width: 90%; 
+    background-color:#f0fdf4; ;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin: 10px;
+    padding: 20px;
+}
+
+.group {
+    display: flex;
+    flex-direction: column;
+}
+
+.value-label {
+    color: #4b5563;
+    padding: 5px;
+}
+
+.value-box {
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1f2937;
+    text-align: center;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* ========================================== */
+/*           MOBILE MEDIA QUERY               */
+/* ========================================== */
+@media screen and (max-width: 600px) {
+    body {
+        padding: 10px; /* Reduce heavy body space on small screens */
+    }
+
+    .section {
+        padding: 8px;
+        border-radius: 12px; /* Smoother corner look for mobile cards */
+    }
+
+    /* Hide the desktop header labels since fields stack now */
+    .header-row {
+        display: none;
+    }
+
+    /* Stack input inputs vertically inside each subject area */
+    .row {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    margin-bottom: 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+/* Forces form elements to take up full available mobile horizontal space */
+.sub, .grade, .credit, .remove {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+    /* Style the inputs to be white with soft borders as requested */
+    select, input {
+        background-color: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        margin: 6px 0px; /* Stack spacing spacing */
+        height: 46px; /* Touch-friendly height */
+        font-size: 16px; /* Prevents iOS from auto-zooming screen layout */
+        box-sizing: border-box;
+    }
+
+    /* Make the delete button full width or clear bar look */
+    .remove {
+        margin: 6px 0px;
+        height: 42px;
+        border: 1px solid #fee2e2;
+        background-color: #fef2f2;
+        border-radius: 6px;
+        text-align: center;
+    }
+
+    /* Make action buttons take up full mobile width */
+    #add, #cal {
+        display: block;
+        width: calc(100% - 20px);
+        margin: 10px auto;
+        height: 48px;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    /* Optimize the result display layout box for small screens */
+    .result-full-box {
+        width: auto;
+        margin: 15px 5px;
+        padding: 15px;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+  <div>
+  <h1 style="color: #3323cc;">🎓 SGPA Calculator</h1>
+  </div>
+    <h2 style="color:black;text-align:center;">Enter Grades and Credits</h2>
+    <div class="section">
+      <div id="subject-container">
+        <div class="header-row">
+            <span>Subject Name</span>
+            <span>Grade</span>
+            <span>Credits</span>
+        </div>
+
+    <div class="row"> 
+      <input type="text" class="sub" placeholder="Enter Subject Name">
+            <select class="grade">
+                <option value="">--Select Grade--</option>
+                <option value="S">S</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+            </select>
+      <input type="number" class="credit" placeholder="Enter subject credit">
+        <button  class="remove" onclick="del(this)"><img src="bin.png" class="remove-img"></button>
+    </div>
+    
+    <div class="row">
+      <input type="text" class="sub" placeholder="Enter Subject Name">
+            <select class="grade">
+                <option value="">--Select Grade--</option>
+                <option value="S">S</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+            </select>
+      <input type="number" class="credit" placeholder="Enter subject credit"> 
+      <button  class="remove" onclick="del(this)"><img src="bin.png" class="remove-img"></button>
+    </div>
+    
+    <div class="row">
+      <input type="text" class="sub" placeholder="Enter Subject Name">
+            <select class="grade">
+                <option value="">--Select Grade--</option>
+                <option value="S">S</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+            </select>
+      <input type="number" class="credit" placeholder="Enter subject credit"> 
+      <button  class="remove" onclick="del(this)"><img src="bin.png" class="remove-img"></button>
+    </div>
+    
+    <div class="row">
+      <input type="text" class="sub" placeholder="Enter Subject Name">
+            <select class="grade">
+                <option value="">--Select Grade--</option>
+                <option value="S">S</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+            </select>
+      <input type="number" class="credit" placeholder="Enter subject credit"> 
+      <button  class="remove" onclick="del(this)"><img src="bin.png" class="remove-img"></button>
+    </div>
+    
+    <div class="row">
+      <input type="text" class="sub" placeholder="Enter Subject Name">
+            <select class="grade">
+                <option value="">--Select Grade--</option>
+                <option value="S">S</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+            </select>
+      <input type="number" class="credit" placeholder="Enter subject credit"> 
+      <button  class="remove" onclick="del(this)"><img src="bin.png" class="remove-img"></button>
+    </div>
+  </div> <!-- subject-container end -->
+    <button type="button" id="add" onclick="addsub()">+ Add Subjects</button>
+    <button type="submit" id="cal" onclick="calsgpa()"><img src="calimg.avif" alt="cal" class="icon">
+      Calculate SGPA</button>
+      
+    <div class="result-full-box">
+        <h2 id="result" style="text-align:center;color:green">SGPA: --</h2>
+  <div class="result-inside">
+    <!-- Total Credits Block -->
+    <div class="group">
+        <label class="value-label">Total Credits</label>
+        <div id="totalcredits" class="value-box"></div>
+    </div>
+
+    <!-- Total Grade Points Block -->
+    <div class="group">
+        <label class="value-label">Total Grade Points</label>
+        <div id="totalgradepoints" class="value-box"></div>
+    </div>
+
+</div>
+  </div> <!-- .section end -->
+</div> <!-- .container end -->
+
+<script>
+  const gradepoints={
+    'S': 10,
+    'A': 9,
+    'B': 8,
+    'C': 7,
+    'D': 6,
+    'E': 5, 
+    'F': 0
+   };
+
+
+  function del(element){
+    let totalrows=document.querySelectorAll(".row").length;
+    let rowdel=element.parentElement;
+    if(totalrows<=1){
+      alert("You must keep one row");
+      return;
+    }
+    else{
+    rowdel.remove();
+    }
+  }
+
+let subcount=5;
+  function addsub(){
+    subcount++;
+    let container=document.getElementById("subject-container");
+    let newrow=document.createElement("div");
+    newrow.className="sub";
+    newrow.innerHTML = `
+    <div class="row"> 
+        <input type="text" class="sub" placeholder="Enter Subject Name">
+        <select class="grade">
+            <option value="">--Select Grade--</option>
+            <option value="S">S</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
+        </select>
+        <input type="number" class="credit" placeholder="Enter subject credit">
+        <button class="remove" onclick="del(this)">X</button>
+    </div>
+    `;
+    container.appendChild(newrow);
+  }
+
+  function calsgpa(){
+        let g=document.querySelectorAll('.grade');
+        let c=document.querySelectorAll('.credit');
+        let totalpoints=0;
+        let totalcredits=0;
+  // 1. ADDED THE FLAG: Assume form is empty at start
+    let hasInputs = false;
+
+        for(let i=0;i<g.length;i++){
+          let gradeletter=g[i].value.toUpperCase();
+          let creditvalue=c[i].value;
+          if(gradeletter != "" && creditvalue != ""){
+            hasInputs = true; // Mark that inputs exist
+            let gp=gradepoints[gradeletter];
+            let credit=Number(creditvalue);
+            if(gp != undefined){
+              totalpoints+=(gp*credit);
+              totalcredits+=credit;
+            }
+            else{
+              alert("Error:"+gradeletter+"is invalid");
+              return;
+            }
+          }
+        }
+        if(!hasInputs){
+            alert("Please enter grades and credits!");
+            return;
+          }
+        let sgpa=0;
+        if(totalcredits>0){
+          sgpa=totalpoints/totalcredits;
+        }
+        
+  // 1. Force the hidden wrapper container block to instantly appear on screen
+  let resultBox = document.querySelector('.result-full-box');
+  if (resultBox) {
+    resultBox.style.display = 'block'; 
+  }
+        document.getElementById("result").innerText="SGPA: "+ sgpa.toFixed(2);
+        document.getElementById("totalcredits").innerText= totalcredits;
+        document.getElementById("totalgradepoints").innerText= totalpoints;
+        return [sgpa.toFixed(2),totalcredits,totalpoints];
+  }
+</script>
+</body>
+</html>
